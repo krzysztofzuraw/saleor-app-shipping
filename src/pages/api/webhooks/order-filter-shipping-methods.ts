@@ -7,12 +7,7 @@ import { saleorApp } from "../../../saleor-app";
 const OrderFilterShippingMethodsPayload = gql`
   fragment OrderFilterShippingMethodsPayload on OrderFilterShippingMethods {
     order {
-      deliveryMethod {
-        ... on ShippingMethod {
-          id
-          name
-        }
-      }
+      id
     }
   }
 `;
@@ -39,9 +34,7 @@ export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) =
   const { payload } = ctx;
   console.log("Order Filter Shipping Methods Webhook received with: ", payload);
   const dummyAPI = new DummyExternalShippingAPI();
-  // send selected shipping method on order to your shipping provider API
-  dummyAPI.setShippingMethodForOrder(payload.order?.deliveryMethod);
-  res.status(200).end();
+  res.status(200).json(dummyAPI.getShippingMethodForOrder());
 });
 
 export const config = {
